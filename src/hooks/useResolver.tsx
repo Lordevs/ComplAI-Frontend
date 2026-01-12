@@ -8,8 +8,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import type { Citation } from '@/types/chat';
 import apiCaller, { RequestData } from '@/config/apiCaller';
+import type { Citation } from '@/types/chat';
 
 // Types for Complaints
 export interface Complaint {
@@ -312,7 +312,7 @@ export const useResolver = () => {
             if (!onChunkUpdate) return;
             onChunkUpdate({
               reasoning: fullReasoning,
-              content: done ? fullContent : '', // UI shows content when done, reasoning during stream (matching useChat)
+              content: fullContent, // Now streaming content along with reasoning
               done,
             });
           };

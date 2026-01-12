@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 
+import { ResolverMessage } from '@/hooks/useResolver';
 import { MarkdownRenderer } from '@/lib/markdown';
 import { cn } from '@/lib/utils';
-import { ResolverMessage } from '@/hooks/useResolver';
 
 import CopyButton from '../common/copy-button';
 import { Button } from '../ui/button';
@@ -15,12 +15,14 @@ interface ResolverChatBubbleProps {
   message: ResolverMessage;
   onRevert?: (id: string | number) => void;
   onRetry?: () => void;
+  isSelected?: boolean;
 }
 
 export function ResolverChatBubble({
   message,
   onRevert,
   onRetry,
+  isSelected,
 }: ResolverChatBubbleProps) {
   const isBot = message.user === 'AI';
   const isError = !!message.isError;

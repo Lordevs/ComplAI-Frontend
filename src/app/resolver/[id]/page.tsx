@@ -1,17 +1,19 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ResolverMessage, useResolver } from '@/hooks/useResolver';
 import { ResponseChat } from '@/components/resolver/response-chat';
 import { ResponseDisplay } from '@/components/resolver/response-display';
 import { ResponseHeader } from '@/components/resolver/response-header';
 import { ResponseKeyPoints } from '@/components/resolver/response-key-points';
 import { ResponseTab, ResponseTabs } from '@/components/resolver/response-tabs';
+import { ResolverMessage, useResolver } from '@/hooks/useResolver';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function ResolverResponsePage() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
   const {
     sendMessage,
     useComplaintDetails,
@@ -40,6 +42,9 @@ export default function ResolverResponsePage() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [streamingContent, setStreamingContent] = useState('');
   const [hasTriggeredAuto, setHasTriggeredAuto] = useState(false);
+  const [selectedMessageId, setSelectedMessageId] = useState<string | number | null>(
+    null
+  );
 
   // Map infinite pages to the chatMessages state.
   const fetchedMessages = useMemo(() => {
@@ -74,8 +79,27 @@ export default function ResolverResponsePage() {
 
   // Sync fetched messages with local chatMessages state
   useEffect(() => {
+    // Only sync if we're not currently streaming and we actually have fetched data
     if (!isStreaming && fetchedMessages.length > 0) {
-      setChatMessages(fetchedMessages);
+      setChatMessages((prev) => {
+        // If we have no local messages, just take the fetched ones
+        if (prev.length === 0) return fetchedMessages;
+
+        // Check if the latest message in fetched exists in our local list
+        // This helps determine if the server has caught up with our local updates
+        const latestFetched = fetchedMessages[fetchedMessages.length - 1];
+        const existsInLocal = prev.some((m) => m.id === latestFetched.id);
+
+        // If local state has more messages and the latest fetched message isn't even the last one we have
+        // it means the server response is still stale relative to what the user just sent.
+        if (prev.length > fetchedMessages.length && !existsInLocal) {
+          return prev;
+        }
+
+        // Otherwise, prioritize official data but keep local placeholders if they are newer
+        // For simplicity, if lengths match or server has more, take server data
+        return fetchedMessages;
+      });
     }
   }, [fetchedMessages, isStreaming]);
 
@@ -104,6 +128,7 @@ export default function ResolverResponsePage() {
       setChatMessages((prev) => [...prev, userMessage, placeholderAiMessage]);
       setIsStreaming(true);
       setStreamingContent('');
+      setSelectedMessageId(null);
 
       try {
         const aiResponse = await sendMessage({
@@ -161,9 +186,13 @@ export default function ResolverResponsePage() {
       } finally {
         setIsStreaming(false);
         setStreamingContent('');
+        // Invalidate the message list query to pull official data from server
+        queryClient.invalidateQueries({
+          queryKey: ['complaintMessages', 'infinite', id as string],
+        });
       }
     },
-    [id, sendMessage]
+    [id, sendMessage, queryClient]
   );
 
   // No manual sync needed anymore with useInfiniteQuery memo
@@ -209,18 +238,7 @@ export default function ResolverResponsePage() {
   ]);
 
   const handleRevert = (id: string | number) => {
-    const messageIndex = chatMessages.findIndex((m) => m.id === id);
-    if (messageIndex === -1) return;
-
-    const message = chatMessages[messageIndex];
-    if (message.user !== 'AI') return;
-
-    let removeFromIndex = messageIndex;
-    if (messageIndex > 0 && chatMessages[messageIndex - 1].user === 'USER') {
-      removeFromIndex = messageIndex - 1;
-    }
-
-    setChatMessages((prev) => prev.slice(0, removeFromIndex));
+    setSelectedMessageId(id);
   };
 
   // Get the latest AI response for display
@@ -229,10 +247,24 @@ export default function ResolverResponsePage() {
     .find((m) => m.user === 'AI');
 
   // Use streaming content if actively streaming, otherwise use latest message
-  // If no AI message yet and not streaming, use extracted text or placeholder
-  const activeContent = isStreaming
-    ? streamingContent
-    : latestAiMessage?.content || details?.description || '';
+  // If a specific message is selected (via Revert), show that, otherwise show latest
+  const activeContent = useMemo(() => {
+    if (isStreaming) return streamingContent;
+
+    if (selectedMessageId) {
+      const selected = chatMessages.find((m) => m.id === selectedMessageId);
+      if (selected) return selected.content;
+    }
+
+    return latestAiMessage?.content || details?.description || '';
+  }, [
+    isStreaming,
+    streamingContent,
+    selectedMessageId,
+    chatMessages,
+    latestAiMessage,
+    details?.description,
+  ]);
 
   const handleExport = async () => {
     try {
@@ -309,6 +341,7 @@ export default function ResolverResponsePage() {
                   onLoadMore={handleLoadMoreMessages}
                   isLoadingMore={isFetchingNextPage}
                   hasMore={hasNextPage}
+                  selectedMessageId={selectedMessageId}
                 />
               ) : (
                 <ResponseKeyPoints

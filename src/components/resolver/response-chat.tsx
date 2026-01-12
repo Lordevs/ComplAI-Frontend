@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import { Send } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { ResolverMessage } from '@/hooks/useResolver';
 import { Button } from '@/components/ui/button';
+import { ResolverMessage } from '@/hooks/useResolver';
 
 import { ResolverChatBubble } from './resolver-chat-bubble';
 
@@ -17,6 +17,7 @@ interface ResponseChatProps {
   onLoadMore?: () => void;
   isLoadingMore?: boolean;
   hasMore?: boolean;
+  selectedMessageId?: string | number | null;
 }
 
 /**
@@ -32,6 +33,7 @@ export function ResponseChat({
   onLoadMore,
   isLoadingMore,
   hasMore,
+  selectedMessageId,
 }: ResponseChatProps) {
   const [refineInput, setRefineInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -122,6 +124,7 @@ export function ResponseChat({
               message={message}
               onRevert={onRevert}
               onRetry={index === messages.length - 1 ? onRetry : undefined}
+              isSelected={selectedMessageId === message.id}
             />
           ))}
           {/* Auto-scroll anchor */}
@@ -153,11 +156,10 @@ export function ResponseChat({
             type="submit"
             variant={refineInput.trim() === '' ? 'ghost' : 'default'}
             size="icon"
-            className={`absolute right-6 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full transition-all duration-200 ${
-              refineInput.trim() === ''
-                ? 'bg-transparent border border-gray-300'
-                : 'bg-gradient-to-r from-[#020F26] to-[#07378C]'
-            }`}
+            className={`absolute right-6 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full transition-all duration-200 ${refineInput.trim() === ''
+              ? 'bg-transparent border border-gray-300'
+              : 'bg-gradient-to-r from-[#020F26] to-[#07378C]'
+              }`}
           >
             <Send
               className="h-4 w-4"
