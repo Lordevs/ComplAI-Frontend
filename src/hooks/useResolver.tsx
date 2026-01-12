@@ -8,8 +8,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import apiCaller, { RequestData } from '@/config/apiCaller';
 import type { Citation } from '@/types/chat';
+import apiCaller, { RequestData } from '@/config/apiCaller';
 
 // Types for Complaints
 export interface Complaint {

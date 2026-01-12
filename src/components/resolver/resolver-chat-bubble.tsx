@@ -1,12 +1,12 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
-import { ResolverMessage } from '@/hooks/useResolver';
 import { MarkdownRenderer } from '@/lib/markdown';
 import { cn } from '@/lib/utils';
+import { ResolverMessage } from '@/hooks/useResolver';
 
 import CopyButton from '../common/copy-button';
 import { Button } from '../ui/button';

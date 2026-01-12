@@ -1,15 +1,15 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
 
+import { ResolverMessage, useResolver } from '@/hooks/useResolver';
 import { ResponseChat } from '@/components/resolver/response-chat';
 import { ResponseDisplay } from '@/components/resolver/response-display';
 import { ResponseHeader } from '@/components/resolver/response-header';
 import { ResponseKeyPoints } from '@/components/resolver/response-key-points';
 import { ResponseTab, ResponseTabs } from '@/components/resolver/response-tabs';
-import { ResolverMessage, useResolver } from '@/hooks/useResolver';
-import { useQueryClient } from '@tanstack/react-query';
 
 export default function ResolverResponsePage() {
   const { id } = useParams();
@@ -42,9 +42,9 @@ export default function ResolverResponsePage() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [streamingContent, setStreamingContent] = useState('');
   const [hasTriggeredAuto, setHasTriggeredAuto] = useState(false);
-  const [selectedMessageId, setSelectedMessageId] = useState<string | number | null>(
-    null
-  );
+  const [selectedMessageId, setSelectedMessageId] = useState<
+    string | number | null
+  >(null);
 
   // Map infinite pages to the chatMessages state.
   const fetchedMessages = useMemo(() => {
