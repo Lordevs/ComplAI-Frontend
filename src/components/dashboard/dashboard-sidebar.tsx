@@ -1,10 +1,5 @@
 'use client';
 
-import type React from 'react';
-import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import {
   Banknote,
@@ -16,6 +11,11 @@ import {
   LayoutDashboard,
   User2,
 } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import type React from 'react';
+import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -31,7 +31,7 @@ const COMPLIANCE_TOOLS = [
     image: '/companion-icon.svg',
     label: 'Companion',
   },
-  { href: ROUTES.RESOLVER, icon: FileText, label: 'Resolver' },
+  { href: ROUTES.RESOLVER, icon: FileText, label: 'Resolve' },
 ];
 
 const APP_NAVIGATION = [
