@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import {
   Document,
   Font,
@@ -10,6 +9,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import React from 'react';
 
 // Note: In a production app, you might want to register a custom font like Poppins
 // for branding consistency. For now, we use standard sans-serif.
@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
     fixed: true,
   },
   logo: {
-    width: 150,
+    height: 40, // Fixed height to match default logo look
+    width: 'auto',
   },
   dateText: {
     fontSize: 9,
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
   watermarkImage: {
-    width: 300,
+    width: 250,
   },
   bold: {
     fontWeight: 700,

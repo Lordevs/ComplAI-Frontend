@@ -1,16 +1,16 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'next/navigation';
 import { useUserContext } from '@/contexts/user-context';
 import { useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ResolverMessage, useResolver } from '@/hooks/useResolver';
 import { ResponseChat } from '@/components/resolver/response-chat';
 import { ResponseDisplay } from '@/components/resolver/response-display';
 import { ResponseHeader } from '@/components/resolver/response-header';
 import { ResponseKeyPoints } from '@/components/resolver/response-key-points';
 import { ResponseTab, ResponseTabs } from '@/components/resolver/response-tabs';
+import { ResolverMessage, useResolver } from '@/hooks/useResolver';
 
 export default function ResolverResponsePage() {
   const { id } = useParams();
@@ -275,8 +275,28 @@ export default function ResolverResponsePage() {
         '@/components/resolver/pdf-document'
       );
 
+      let logoData: string | null = null;
+      if (user?.company_picture) {
+        try {
+          // Use the proxy-image API route to bypass CORS
+          const response = await fetch(
+            `/api/proxy-image?url=${encodeURIComponent(user.company_picture)}`
+          );
+          if (!response.ok) throw new Error('Proxy fetch failed');
+          const blob = await response.blob();
+          logoData = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.readAsDataURL(blob);
+          });
+        } catch (e) {
+          console.error('Error proxying company logo:', e);
+          logoData = null; // Fallback to default in PdfDocument
+        }
+      }
+
       const blob = await pdf(
-        <PdfDocument content={activeContent} logo={user?.company_picture} />
+        <PdfDocument content={activeContent} logo={logoData} />
       ).toBlob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
