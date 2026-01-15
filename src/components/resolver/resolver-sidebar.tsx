@@ -138,18 +138,37 @@ export function ResolverSidebar() {
                             : 'bg-white text-[#04338B] hover:bg-white/80'
                         )}
                       >
-                        {/* Badge */}
-                        <div
-                          className={cn(
-                            'flex items-center gap-2 px-3 py-1 rounded-full w-fit',
-                            isActive
-                              ? 'text-white border border-[#D1E1FF]'
-                              : 'bg-[#F5F8FF] text-[#04338B] border border-[#D1E1FF]'
-                          )}
-                        >
-                          <FileText className="h-3 w-3" />
-                          <span className="text-sm font-semibold whitespace-nowrap capitalize">
-                            Complaint
+                        <div className="flex items-center justify-between gap-1">
+                          {/* Badge */}
+                          <div
+                            className={cn(
+                              'flex items-center gap-2 px-3 py-1 rounded-full w-fit',
+                              isActive
+                                ? 'text-white border border-[#D1E1FF]'
+                                : 'bg-[#F5F8FF] text-[#04338B] border border-[#D1E1FF]'
+                            )}
+                          >
+                            <FileText className="h-3 w-3" />
+                            <span className="text-sm font-semibold whitespace-nowrap capitalize">
+                              Complaint
+                            </span>
+                          </div>
+
+                          <span
+                            className={cn(
+                              'text-xs font-medium whitespace-nowrap',
+                              isActive ? 'text-white/70' : 'text-[#73726D]'
+                            )}
+                          >
+                            {complaint.updated_at
+                              ? new Date(
+                                  complaint.updated_at
+                                ).toLocaleDateString('en-GB', {
+                                  day: '2-digit',
+                                  month: 'short',
+                                  year: 'numeric',
+                                })
+                              : ''}
                           </span>
                         </div>
 
