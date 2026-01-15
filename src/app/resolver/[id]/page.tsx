@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { useUserContext } from '@/contexts/user-context';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { ResolverMessage, useResolver } from '@/hooks/useResolver';
@@ -14,6 +15,7 @@ import { ResponseTab, ResponseTabs } from '@/components/resolver/response-tabs';
 export default function ResolverResponsePage() {
   const { id } = useParams();
   const queryClient = useQueryClient();
+  const { user } = useUserContext();
   const {
     sendMessage,
     useComplaintDetails,
@@ -273,7 +275,9 @@ export default function ResolverResponsePage() {
         '@/components/resolver/pdf-document'
       );
 
-      const blob = await pdf(<PdfDocument content={activeContent} />).toBlob();
+      const blob = await pdf(
+        <PdfDocument content={activeContent} logo={user?.company_picture} />
+      ).toBlob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;

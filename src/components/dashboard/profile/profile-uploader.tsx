@@ -27,6 +27,10 @@ interface ProfileImageUploaderProps {
   /** Callback when the cropped image is saved.
       Receives a base64 data URL of the cropped image. */
   onSave: (croppedImage: string) => void;
+  /** Custom title for the dialog. */
+  title?: string;
+  /** Custom description for the dialog. */
+  description?: string;
 }
 
 const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
@@ -34,6 +38,8 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
   open,
   onOpenChange,
   onSave,
+  title = 'Update Profile Picture',
+  description = 'Upload a new photo and crop it to update your profile picture.',
 }) => {
   // State for image source (data URL), crop parameters, and zoom
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -91,11 +97,9 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
       </DialogTrigger>
       <DialogContent className="max-w-xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">
-            Update Profile Picture
-          </DialogTitle>
+          <DialogTitle className="text-2xl font-bold">{title}</DialogTitle>
           <DialogDescription className="text-sm text-gray-500">
-            Upload a new photo and crop it to update your profile picture.
+            {description}
           </DialogDescription>
         </DialogHeader>
 

@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
 
 interface PdfDocumentProps {
   content: string;
+  logo?: string | null;
 }
 
 const renderContent = (content: string) => {
@@ -294,24 +295,26 @@ const parseInline = (text: string): React.ReactNode => {
   });
 };
 
-export const PdfDocument = ({ content }: PdfDocumentProps) => {
+export const PdfDocument = ({ content, logo }: PdfDocumentProps) => {
   const currentDate = new Date().toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
   });
 
+  const logoSrc = logo || '/logo-transparent.png';
+
   return (
     <Document title="Compliance Statement">
       <Page size="A4" style={styles.page}>
         {/* Watermark Logo */}
         <View style={styles.watermarkView} fixed>
-          <Image src="/logo-transparent.png" style={styles.watermarkImage} />
+          <Image src={logoSrc} style={styles.watermarkImage} />
         </View>
 
         {/* Header */}
         <View style={styles.header} fixed>
-          <Image src="/logo-transparent.png" style={styles.logo} />
+          <Image src={logoSrc} style={styles.logo} />
           <Text style={styles.dateText}>{currentDate}</Text>
         </View>
 

@@ -77,7 +77,7 @@ export function ActivityTable({
       usage_date: item.usage_date,
       activity_type: item.activity_type ?? 'query',
       tokens_used: item.credits, // Credits (already total_tokens/1000, 2dp)
-      tool: 'companion',
+      tool: item.tool_used ?? 'N/A',
       user_id: 0,
       ai_message: {
         id: 0,

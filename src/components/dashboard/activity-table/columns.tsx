@@ -34,12 +34,10 @@ export const createColumns = (
       accessorKey: 'tool',
       header: 'Tool',
       enableSorting: true,
-      cell: () => {
-        // const activityType = row.getValue('activity_type') as string;
+      cell: ({ row }) => {
+        const tool = row.getValue('tool') as string;
         return (
-          <div className="font-medium text-[#667085] capitalize">
-            {/* {activityType} */} Companion
-          </div>
+          <div className="font-medium text-[#667085] capitalize">{tool}</div>
         );
       },
     },

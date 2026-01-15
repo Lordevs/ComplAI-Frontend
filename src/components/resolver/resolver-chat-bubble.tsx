@@ -258,7 +258,7 @@ export function ResolverChatBubble({
                     onClick={() => onRevert(message.id)}
                     className="h-8 px-4 text-xs font-medium rounded-lg"
                   >
-                    Revert to History
+                    Use this
                   </Button>
                 )}
               </div>

@@ -6,7 +6,7 @@ import { API_ROUTES } from '@/constants/apiRoutes';
 import { useUserContext } from '@/contexts/user-context';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { Eye, EyeOff, UserIcon } from 'lucide-react';
+import { Building, Eye, EyeOff, UserIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
 import apiCaller from '@/config/apiCaller';
@@ -35,6 +35,9 @@ export default function ProfileForm({ type }: ProfileFormProps) {
   const [showUserId, setShowUserId] = useState(false);
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [isCompanyLogoUploaderOpen, setIsCompanyLogoUploaderOpen] =
+    useState(false);
+  const [companyLogo, setCompanyLogo] = useState<string | null>(null);
 
   const { control, handleSubmit, reset, watch } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -82,6 +85,7 @@ export default function ProfileForm({ type }: ProfileFormProps) {
           { keepDefaultValues: false }
         );
         setProfileImage(data.profile_picture);
+        setCompanyLogo(data.company_picture);
       } catch (error) {
         console.error('Failed to fetch profile:', error);
       }
@@ -155,6 +159,35 @@ export default function ProfileForm({ type }: ProfileFormProps) {
       setProfileImage(croppedImage);
     } catch (error) {
       console.error('Failed to update profile image:', error);
+    }
+  };
+  const handleCompanyLogoSave = async (croppedImage: string) => {
+    try {
+      const blob = await fetch(croppedImage).then((res) => res.blob());
+      const file = new File([blob], 'company_logo.png', { type: 'image/png' });
+      const formData = new FormData();
+      formData.append('company_picture', file);
+
+      const response = await axios.post(
+        process.env.NEXT_PUBLIC_BACKEND_URL +
+          API_ROUTES.USER.ADD_COMPANY_PICTURE,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      );
+      console.log('Upload response:', response.data);
+      setUser((prev) => {
+        if (!prev) return prev;
+        return { ...prev, company_picture: croppedImage };
+      });
+      refresh();
+      setCompanyLogo(croppedImage);
+    } catch (error) {
+      console.error('Failed to update company logo:', error);
     }
   };
 
@@ -248,7 +281,36 @@ export default function ProfileForm({ type }: ProfileFormProps) {
           </TooltipProvider>
         </div>
 
-        <div className="md:ml-auto flex gap-4">
+        <div className="md:ml-auto flex items-center gap-4">
+          {/* Company Logo Image Container */}
+          <div className="flex flex-col items-center">
+            <div
+              onClick={() => setIsCompanyLogoUploaderOpen(true)}
+              className="relative aspect-square w-16 md:w-20 lg:w-24 group overflow-hidden rounded-full cursor-pointer bg-gray-50 border-2 border-dashed border-gray-200 hover:border-blue-400 transition-colors"
+            >
+              {companyLogo || user?.company_picture ? (
+                <Image
+                  src={companyLogo || user!.company_picture!}
+                  alt="Company Logo"
+                  fill
+                  className="rounded-full object-cover"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full w-full">
+                  <Building className="h-8 w-8 text-gray-300" />
+                </div>
+              )}
+              <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span className="text-white text-sm font-medium text-center px-1">
+                  Company Logo
+                </span>
+              </div>
+            </div>
+            <span className="text-[10px] uppercase tracking-wider font-bold text-gray-400 mt-1">
+              Company Logo
+            </span>
+          </div>
+
           <Button
             type="button"
             variant={isEditable ? 'outline' : 'default'}
@@ -275,6 +337,15 @@ export default function ProfileForm({ type }: ProfileFormProps) {
         open={isUploaderOpen}
         onOpenChange={setIsUploaderOpen}
         onSave={handleImageSave}
+      />
+
+      <ProfileImageUploader
+        oldImage={companyLogo || '/default-company.png'}
+        open={isCompanyLogoUploaderOpen}
+        onOpenChange={setIsCompanyLogoUploaderOpen}
+        onSave={handleCompanyLogoSave}
+        title="Update Company Logo"
+        description="Upload and crop your company logo to display on your reports."
       />
     </form>
   );

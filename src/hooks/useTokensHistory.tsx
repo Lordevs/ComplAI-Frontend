@@ -20,6 +20,7 @@ export type CreditsHistoryResponse = {
     id: number;
     usage_date: string;
     activity_type: string | null;
+    tool_used: string | null;
     credits: number;
     total_tokens: number;
     input_tokens: number;

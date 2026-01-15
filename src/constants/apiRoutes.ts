@@ -17,6 +17,7 @@ export const API_ROUTES = {
     GET_TOKENS_SUMMARY: '/api/users/tokens/',
     GET_TOKENS_HISTORY: '/api/users/tokens-history/',
     UPDATE_PROFILE_IMAGE: '/api/users/add-profile-picture/',
+    ADD_COMPANY_PICTURE: '/api/users/add-company-picture/',
   },
   CHAT: {
     GET_INTERACTION_HISTORY: '/api/chats/token-usage/',
