@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import {
   Document,
   Font,
@@ -9,7 +10,6 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
-import React from 'react';
 
 // Note: In a production app, you might want to register a custom font like Poppins
 // for branding consistency. For now, we use standard sans-serif.

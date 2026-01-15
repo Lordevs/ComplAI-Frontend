@@ -1,16 +1,16 @@
 'use client';
 
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { useUserContext } from '@/contexts/user-context';
 import { useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ResolverMessage, useResolver } from '@/hooks/useResolver';
 import { ResponseChat } from '@/components/resolver/response-chat';
 import { ResponseDisplay } from '@/components/resolver/response-display';
 import { ResponseHeader } from '@/components/resolver/response-header';
 import { ResponseKeyPoints } from '@/components/resolver/response-key-points';
 import { ResponseTab, ResponseTabs } from '@/components/resolver/response-tabs';
-import { ResolverMessage, useResolver } from '@/hooks/useResolver';
 
 export default function ResolverResponsePage() {
   const { id } = useParams();
