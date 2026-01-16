@@ -3,9 +3,9 @@
 import { format } from 'date-fns';
 import { FileText, Folder, PenLine } from 'lucide-react';
 
+import { UploadedFile } from '@/types/upload';
 import { FileCard } from '@/components/common/file-card';
 import { ResolverMode } from '@/components/resolver/resolver-input-toggle';
-import { UploadedFile } from '@/types/upload';
 
 import { PreviewSection } from '../preview-section';
 
