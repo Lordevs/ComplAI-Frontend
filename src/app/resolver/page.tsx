@@ -1,19 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-import { UploadedFile } from '@/types/upload';
-import { CreateComplaintPayload, useResolver } from '@/hooks/useResolver';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { ResolverMode } from '@/components/resolver/resolver-input-toggle';
 import { ResolverNavigation } from '@/components/resolver/resolver-navigation';
 import { Step1Complaint } from '@/components/resolver/steps/step-1-complaint';
 import { Step2Documents } from '@/components/resolver/steps/step-2-documents';
 import { Step3Prompt } from '@/components/resolver/steps/step-3-prompt';
 import { Step4Preview } from '@/components/resolver/steps/step-4-preview';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { CreateComplaintPayload, useResolver } from '@/hooks/useResolver';
+import { UploadedFile } from '@/types/upload';
 
 export default function ResolverPage() {
   // Wizard state
@@ -155,7 +155,7 @@ export default function ResolverPage() {
           {/* Header */}
           <div className="text-center mb-16 w-full">
             <h1 className="text-3xl font-medium text-[#04338B] mb-4">
-              AI Powered Compliant Resolve v1
+              AI Powered Complaint Resolve v1
             </h1>
             <p className="text-[#626262]">
               Compl-AI's AI Powered Complaint Handler.

@@ -28,7 +28,7 @@ export function Step3Prompt({ promptText, setPromptText }: Step3PromptProps) {
               Write Your Prompt
             </h3>
             <p className="text-[#04338B] font-normal">
-              Please select the input type for Compliant Form.
+              Please select the input type for Complaint Form.
             </p>
           </div>
         </div>

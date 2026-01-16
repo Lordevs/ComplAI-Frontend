@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { ROUTES } from '@/constants/routes';
 import { Plus } from 'lucide-react';
+import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 
@@ -15,7 +15,7 @@ export function ResponseHeader() {
     <div className="flex items-center justify-between w-full">
       {/* Title */}
       <h1 className="text-2xl font-medium text-[#04338B]">
-        AI Powered Compliant Resolver
+        AI Powered Complaint Resolver
       </h1>
 
       {/* Action Buttons */}

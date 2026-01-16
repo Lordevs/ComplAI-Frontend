@@ -3,10 +3,10 @@
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from '@/constants/upload';
 import { FileText } from 'lucide-react';
 
-import { UploadedFile } from '@/types/upload';
-import { Card } from '@/components/ui/card';
 import { FileUpload } from '@/components/common/file-upload';
 import UploadedFiles from '@/components/common/uploaded-files';
+import { Card } from '@/components/ui/card';
+import { UploadedFile } from '@/types/upload';
 
 interface Step2DocumentsProps {
   files: UploadedFile[];
@@ -14,7 +14,7 @@ interface Step2DocumentsProps {
 }
 
 /**
- * Step 2: Upload Your Supporting Compliant Documents
+ * Step 2: Upload Your Supporting Complaint Documents
  * User can upload supporting documents for their complaint.
  */
 export function Step2Documents({ files, setFiles }: Step2DocumentsProps) {

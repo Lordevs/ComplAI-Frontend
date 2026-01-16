@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 
+import { ResolverMessage } from '@/hooks/useResolver';
 import { MarkdownRenderer } from '@/lib/markdown';
 import { cn } from '@/lib/utils';
-import { ResolverMessage } from '@/hooks/useResolver';
 
+import { Target } from 'lucide-react';
 import CopyButton from '../common/copy-button';
 import { Button } from '../ui/button';
 
@@ -259,6 +260,7 @@ export function ResolverChatBubble({
                     className="h-8 px-4 text-xs font-medium rounded-lg"
                   >
                     Use this
+                    <Target className="h-4 w-4" />
                   </Button>
                 )}
               </div>
