@@ -56,7 +56,7 @@ export function TokenChart() {
 
       return {
         date: formattedDate,
-        tokens: Math.round(stat.tokens_used / 1000), // Convert to thousands
+        tokens: Math.round(stat.total_tokens / 1000), // Convert to thousands
         input_tokens: Math.round(stat.input_tokens / 1000),
         output_tokens: Math.round(stat.output_tokens / 1000),
         request_count: stat.request_count,
