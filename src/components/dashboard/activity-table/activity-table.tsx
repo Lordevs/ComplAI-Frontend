@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
-import type { ActivityItem } from '@/types/dashboard';
-import { cn } from '@/lib/utils';
-import { useCreditsHistory } from '@/hooks/useTokensHistory';
+import { UserQueryModal } from '@/components/dashboard/activity-table/user-quey-modal';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { UserQueryModal } from '@/components/dashboard/activity-table/user-quey-modal';
+import { useCreditsHistory } from '@/hooks/useTokensHistory';
+import { cn } from '@/lib/utils';
+import type { ActivityItem } from '@/types/dashboard';
 
 import { DataTable } from '../../common/data-table';
 import { createColumns } from './columns';
@@ -70,7 +70,7 @@ export function ActivityTable({
     );
   }
 
-  // Transform credits history response to table format.
+  // Transform credits history response to table format
   const tableData: ActivityItem[] =
     data?.results?.map((item) => ({
       id: item.id,
@@ -149,31 +149,28 @@ export function ActivityTable({
           <div className="flex flex-col items-start md:flex-row md:items-center gap-4">
             <div className="flex gap-2">
               <button
-                className={`px-3 py-1 text-sm rounded-md border ${
-                  filterPeriod === '7d'
+                className={`px-3 py-1 text-sm rounded-md border ${filterPeriod === '7d'
                     ? 'bg-blue-600 text-white border-blue-600'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                }`}
+                  }`}
                 onClick={() => setFilterPeriod('7d')}
               >
                 Last 7 days
               </button>
               <button
-                className={`px-3 py-1 text-sm rounded-md border ${
-                  filterPeriod === '30d'
+                className={`px-3 py-1 text-sm rounded-md border ${filterPeriod === '30d'
                     ? 'bg-blue-600 text-white border-blue-600'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                }`}
+                  }`}
                 onClick={() => setFilterPeriod('30d')}
               >
                 Last 30 days
               </button>
               <button
-                className={`px-3 py-1 text-sm rounded-md border ${
-                  filterPeriod === '90d'
+                className={`px-3 py-1 text-sm rounded-md border ${filterPeriod === '90d'
                     ? 'bg-blue-600 text-white border-blue-600'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                }`}
+                  }`}
                 onClick={() => setFilterPeriod('90d')}
               >
                 Last 90 days
