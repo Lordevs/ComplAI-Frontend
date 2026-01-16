@@ -70,7 +70,7 @@ export function ActivityTable({
     );
   }
 
-  // Transform credits history response to table format
+  // Transform credits history response to table format.
   const tableData: ActivityItem[] =
     data?.results?.map((item) => ({
       id: item.id,
